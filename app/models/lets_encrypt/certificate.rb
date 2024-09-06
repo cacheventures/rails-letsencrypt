@@ -22,17 +22,26 @@ module LetsEncrypt
   #  index_letsencrypt_certificates_on_domain       (domain)
   #  index_letsencrypt_certificates_on_renew_after  (renew_after)
   #
-  class Certificate < ApplicationRecord
+  class Certificate
+    include Mongoid::Document
+    include Mongoid::Timestamps
     include CertificateVerifiable
     include CertificateIssuable
 
-    self.table_name = 'letsencrypt_certificates'
+    field :domain, type: String
+    field :certificate, type: String
+    field :intermediaries, type: String
+    field :key, type: String
+    field :expires_at, type: DateTime
+    field :renew_after, type: DateTime
+    field :verification_path, type: String
+    field :verification_string, type: String
 
     validates :domain, presence: true, uniqueness: true
 
-    scope :active, -> { where('certificate IS NOT NULL AND expires_at > ?', Time.zone.now) }
-    scope :renewable, -> { where('renew_after IS NULL OR renew_after <= ?', Time.zone.now) }
-    scope :expired, -> { where('expires_at <= ?', Time.zone.now) }
+    scope :active, -> { where(:certificate.ne => nil, :expires_at.gt => Time.zone.now) }
+    scope :renewable, -> { self.or({ :renew_after => nil }, { :renew_after.lte => Time.zone.now }) }
+    scope :expired, -> { where(:expires_at.lte => Time.zone.now) }
 
     before_create -> { self.key = OpenSSL::PKey::RSA.new(4096).to_s }
     after_destroy -> { delete_from_redis }, if: -> { LetsEncrypt.config.use_redis? && active? }

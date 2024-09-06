@@ -27,6 +27,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'activemodel', '>= 6.1'
   s.add_dependency 'activerecord', '>= 6.1'
   s.add_dependency 'activesupport', '>= 6.1'
+  s.add_dependency 'mongoid', '>= 8'
   s.add_dependency 'railties', '>= 6.1'
   s.add_dependency 'redis'
   s.metadata['rubygems_mfa_required'] = 'true'

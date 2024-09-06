@@ -5,6 +5,7 @@ require 'rails/version'
 require_relative 'boot'
 
 require 'rails/all'
+require 'mongoid'
 
 Bundler.require(*Rails.groups)
 require 'rails-letsencrypt'
