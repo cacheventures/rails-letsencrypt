@@ -8,6 +8,7 @@ appraise 'rails6' do
   gem 'activemodel', '~> 6.1'
   gem 'activerecord', '~> 6.1'
   gem 'activesupport', '~> 6.1'
+  gem 'mongoid', '~> 8'
 end
 
 appraise 'rails7' do
@@ -18,4 +19,5 @@ appraise 'rails7' do
   gem 'activemodel', '~> 7'
   gem 'activerecord', '~> 7'
   gem 'activesupport', '~> 7'
+  gem 'mongoid', '~> 8'
 end

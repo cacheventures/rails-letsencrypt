@@ -18,7 +18,7 @@ module LetsEncrypt
     end
 
     def certificate
-      LetsEncrypt.certificate_model.find_by(verification_path: filename)
+      LetsEncrypt.certificate_model.where(verification_path: filename).first
     end
 
     def filename
